@@ -1,10 +1,11 @@
+
+
 let game_status = '';
 
 
 let Gameboard =  (() => {
 
-
-    let cells = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+    let cells = [''*9];
 
     /**
      * initialize board
@@ -12,18 +13,30 @@ let Gameboard =  (() => {
     let init = () =>{
         //console.log(document);
         let index = 0;
+
         document.querySelectorAll('.cell').forEach(cell => {
-            cell.id = index;
-            cell.style.gridArea = 'c'+(index+1);
+            cell.id = index+'';
+            cell.style.gridArea = 'c'+(index);
             cell.style.width = '100%';
-            cell.addEventListener('click', function (e){
-                playRound(e);
-            })
+            window.animatelo.fadeOut(`.c${cell.id} .content`);
+            cell.addEventListener('click', playRound)
+            cell.addEventListener('mouseenter', appear)
+            cell.addEventListener('mouseleave', disappear)
             cells[index] = cell;
             index++;
-            //console.log(cell);
         });
     };
+
+    function disappear(e){
+        console.log(e.currentTarget);
+        window.animatelo.fadeOut(`.c${e.currentTarget.id} .content`);
+
+    }
+
+    function appear (e){
+        console.log(e.currentTarget);
+        window.animatelo.fadeIn(`.c${e.currentTarget.id} .content`);
+    }
 
     /**
      * Draws shape X or O in given cell
@@ -33,8 +46,8 @@ let Gameboard =  (() => {
      */
     let drawAt = (shape, cell) =>{
         let cell_element = cell;
-        console.log(cell_element);
-        console.log()
+
+        console.log(cell.removeEventListener('click', playRound));
     }
 
     /**
@@ -60,7 +73,7 @@ function playRound (e){
     let playerTurn;
     let shape;
 
-    Gameboard.drawAt(shape, e.srcElement);
+    Gameboard.drawAt(shape, e.srcElement.parentNode);
 
     if(game_status === 'running'){
         console.log("game is running");
