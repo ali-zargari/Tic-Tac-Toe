@@ -1,0 +1,40 @@
+/**
+
+
+ */
+
+*{
+    border: solid 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.container{
+width: 100%;
+}
+
+.grid{
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr) 1.1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+    "c1 c2 c3"
+    "c4 c5 c6"
+    "c7 c8 c9";
+    justify-items: center;
+    align-items: center;
+    width: 50%;
+    height: 50%;
+}
+
+.c1 .c2 .c3 .c4 .c5 .c6 .c7 .c8 .c9 {
+    grid-area: c;
+}
+
+.cell{
+    grid-area: c;
+    border: solid;
+}
