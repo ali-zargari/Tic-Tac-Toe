@@ -55,10 +55,11 @@ let Tools = (() => {
      * @param type type of element to be created.
      * @param parent select the parent-element.
      */
-    let addElement = (type, class_name, parent, id) => {
+    let addElement = (type, class_name, parent, id, value) => {
         let element = document.createElement(type)
         if (class_name.length > 0) element.className = class_name;
         if(id != undefined) element.id = id;
+        if(value != undefined) element.value = value;
         parent.appendChild(element);
         return element;
     };

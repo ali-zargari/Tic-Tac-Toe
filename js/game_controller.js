@@ -12,6 +12,8 @@ let Gameboard =  (() => {
     let cells = [''*9];
     let grid = '';
 
+
+
     /**
      * initialize board
      */
@@ -24,50 +26,17 @@ let Gameboard =  (() => {
             cells[i]= new Cell(i);
             cells[i].placeInGrid(grid);
             let temp = Tools.addElement('div',"content", cells[i].getCellElement())
-            Tools.addElement('i',"X fas fa-times", temp);
-            Tools.addElement('i',"O fas fa-times", temp);
-            cells[i].getCellElement().style.gridArea = 'c'+(i);
-            cells[i].getCellElement().style.width = '100%';
+            Tools.addElement('i',"X fas fa-times", temp, undefined, 'X');
+            Tools.addElement('i',"O fas fa-circle", temp, undefined, 'O');
+
             cells[i].getContent().style.opacity = '0%';
-            cells[i].getCellElement().addEventListener('click', playRound)
-            cells[i].getCellElement().addEventListener('mouseenter', appear)
-            cells[i].getCellElement().addEventListener('mouseleave', disappear)
+            cells[i].addELS();
 
             //console.log(cells[i].getContent());
 
         }
-
-        /**
-         *
-         *
-        document.querySelectorAll('.cell').forEach(cell => {
-
-            window.animatelo.fadeOut(`.c${cell.id} .content`);
-            cell.addEventListener('click', playRound)
-            cell.addEventListener('mouseenter', appear)
-            cell.addEventListener('mouseleave', disappear)
-            cells[index] = cell;
-            index++;
-        });
-         */
     };
 
-    /*
-     * function to help content disappear
-     */
-    function disappear(e){
-        //console.log(e.currentTarget);
-        window.animatelo.fadeOut(`.c${e.currentTarget.id} .content`);
-
-    }
-
-    /*
-     * function to make content reappear
-     */
-    function appear (e){
-        //console.log(e.currentTarget);
-        window.animatelo.fadeIn(`.c${e.currentTarget.id} .content`);
-    }
 
     /**
      * Draws shape X or O in given cell
@@ -75,9 +44,10 @@ let Gameboard =  (() => {
      * @param shape X or O
      * @param cell cell to place the shape at
      */
-    let drawAt = (shape, cell) =>{
+    let draw = (cell) =>{
         let cell_element = cell;
-        //console.log(cell.removeEventListener('click', playRound));
+
+        console.log(cell);
     }
 
     /**
@@ -91,7 +61,7 @@ let Gameboard =  (() => {
         //console.log(cell_element);
     }
 
-    return {cells, init, drawAt, drawAtIndex};
+    return {cells, init, draw, drawAtIndex};
 })();
 
 /**
@@ -102,6 +72,8 @@ function Cell (id) {
     let elem = '';
     this.id = id;
 
+
+
     /**
      * places the cell in the passed grid. Function has to be called for other functions to work.
      *
@@ -109,6 +81,8 @@ function Cell (id) {
      */
     Cell.prototype.placeInGrid = function(grd){
         elem = Tools.addElement('div', `cell c${id}`, grd, id);
+        elem.style.gridArea = 'c'+(id);
+        elem.style.width = '100%';
     }
 
     /**
@@ -126,6 +100,48 @@ function Cell (id) {
     Cell.prototype.getContent = function (){
         return elem.querySelector('.content');
     }
+
+    /*
+     * function to make content disappear
+     */
+    function disappear(e){
+        //console.log(e.currentTarget);
+        window.animatelo.fadeOut(`.c${e.currentTarget.id} .content`);
+
+    }
+
+    /*
+     * function to make content reappear
+     */
+    function appear (e){
+        //console.log(e.currentTarget);
+        window.animatelo.fadeIn(`.c${e.currentTarget.id} .content`);
+    }
+
+
+    /**
+     * Add all needed event listeners to this cell.
+     *
+     *
+     */
+    Cell.prototype.addELS = function(){
+        elem.addEventListener('click', lockState);
+        elem.addEventListener('mouseenter', appear);
+        elem.addEventListener('mouseleave', disappear);
+    }
+
+    /**
+     * lock the current state of the cell by removing the listeners.
+     *
+     *
+     */
+    function lockState (e){
+        elem.removeEventListener('mouseleave', disappear);
+        elem.removeEventListener('mouseenter', appear);
+        elem.removeEventListener('click', lockState);
+
+    }
+
 };
 
 /**
@@ -135,9 +151,8 @@ function Cell (id) {
  */
 function playRound (e){
     let playerTurn;
-    let shape;
-
-    //Gameboard.drawAt(shape, e.srcElement.parentNode);
+    //console.log(e.srcElement);
+    //Gameboard.lockState(e.srcElement);
 
     if(game_status === 'running'){
         console.log("game is running");
