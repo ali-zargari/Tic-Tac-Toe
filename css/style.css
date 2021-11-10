@@ -56,12 +56,24 @@
     font-size: 100%;
 }
 
-.X, .O{
+.X{
+    opacity: 0;
     vertical-align: middle;
     display: table-cell;
     text-align: center;
     font-size: 1000%;
-    padding-left: 28px;
+    padding-left: 29px;
     padding-top: 4px;
+    color: azure;
+}
+
+.O{
+    opacity: 0;
+    vertical-align: middle;
+    display: table-cell;
+    text-align: center;
+    font-size: 800%;
+    padding-left: 18px;
+    padding-top: 20px;
     color: azure;
 }
