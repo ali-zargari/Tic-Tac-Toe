@@ -5,33 +5,27 @@ let game_status = '';
 /**
  * A Gameboard object to simulate a tic tac toe board
  *
- * @type {{init: init, cells: number[], drawAtIndex: drawAtIndex, drawAt: drawAt}}
+ * @type {{init: init, cells: number[], drawAtIndex: drawAtIndex, getCellByID: (function(*): number), draw: draw, getCells: (function(): number[])}}
  */
-let Gameboard =  (() => {
+const Gameboard =  (() => {
 
-    let cells = [''*9];
-    let grid = '';
-
-
+    let cells = [''*9]; // array of cells
+    let grid = ''; //grid to fill with cells.
 
     /**
      * initialize board
      */
-    let init = () =>{
-        //console.log(document);
+    const init = () =>{
+
         let index = 0;
         grid = document.getElementsByClassName('grid')[0];
-        //console.log(grid);
+
         for(let i = 0; i <9; i++){
-            cells[i]= new Cell(i);
+            cells[i]= new Cell(i, false);
             cells[i].placeInGrid(grid);
             let temp = Tools.addElement('div',"content", cells[i].getCellElement())
             Tools.addElement('i',"X fas fa-times", temp, undefined, 'X');
-            Tools.addElement('i',"O fas fa-circle", temp, undefined, 'O');
-
-
-
-            //console.log(cells[i].getContent());
+            Tools.addElement('i',"O far fa-circle", temp, undefined, 'O');
 
         }
     };
@@ -42,8 +36,18 @@ let Gameboard =  (() => {
      * @param i index
      * @returns Cell object
      */
-    let getCellByID = (i) => {
+    const getCellByID = (i) => {
         return cells[i];
+    }
+
+    /**
+     * return the cell at index i
+     *
+     * @param i index
+     * @returns Cell object
+     */
+    const getCells = () => {
+        return cells;
     }
 
     /**
@@ -52,10 +56,9 @@ let Gameboard =  (() => {
      * @param shape X or O
      * @param cell cell to place the shape at
      */
-    let draw = (cell) =>{
+    const draw = (cell) =>{
         let cell_element = cell;
 
-        //console.log(cell);
     }
 
     /**
@@ -64,22 +67,22 @@ let Gameboard =  (() => {
      * @param shape X or O
      * @param i index
      */
-    let drawAtIndex = (shape, i) =>{
+    const drawAtIndex = (shape, i) =>{
         let cell_element = cells[i];
-        //console.log(cell_element);
+
     }
 
-    return {cells, getCellByID, init, draw, drawAtIndex};
+    return {cells, getCellByID, init, draw, drawAtIndex, getCells};
 })();
 
 /**
  * Cell object to simulate the content in each cell of the tic tac toe board.
  */
-function Cell (id) {
+function Cell (id, played) {
 
     let elem = '';
     this.id = id;
-    let played = false;
+    this.played = played;
 
 
 
@@ -110,7 +113,7 @@ function Cell (id) {
     }
 
     /**
-     *
+     * return the cells element.
      * @returns cell's element.
      *
      */
@@ -130,8 +133,12 @@ function Cell (id) {
      * function to make content disappear
      */
     this.disappear = function(e){
-        //console.log(e.currentTarget);
-        window.animatelo.fadeOut(`.c${e.currentTarget.id} .content .X`);
+
+        let temp_shape = 'O';
+        if(Controller.isPlayerTurn())
+            temp_shape = 'X';
+
+        window.animatelo.fadeOut(`.c${id} .content .${temp_shape}`);
 
     }
 
@@ -139,43 +146,52 @@ function Cell (id) {
      * function to make content reappear
      */
     this.appear = function (){
+
         let temp_shape = 'O';
         if(Controller.isPlayerTurn())
             temp_shape = 'X';
 
         window.animatelo.fadeIn(`.c${id} .content .${temp_shape}`);
+
     }
 
 
     /**
-     * lock the current state of the cell by removing the listeners.
      *
+     * lock the current state of the cell by removing its listeners.
      *
      */
     this.lockState = function (e){
-        console.log(this);
+
         elem.removeEventListener('mouseleave', this.disappear);
         elem.removeEventListener('mouseenter', this.appear);
-        elem.removeEventListener('click', this.lockState);
-        played = true;
+        elem.removeEventListener('click', Controller.playRound);
+        this.played = true;
+
     }
 
 };
 
 
-
+/**
+ * Controller object to control the flow of the game. Makes use of Cell and Gameboard Objects.
+ * @type {{playRound: playRound, startGame: startGame, isPlayerTurn: (function(): boolean)}}
+ */
 let Controller =  (() => {
     let player_turn = true;
     let selected_cell = 'NOT_SELECTED'
 
-    let isPlayerTurn = () =>{
+    /**
+     * Return player_turn (true if it is the players turn, false otherwise).
+     */
+    const isPlayerTurn = () =>{
         return player_turn;
     }
 
     /**
      * TODO: more features later
      */
-    let startGame = () => {
+    const startGame = () => {
         Gameboard.init();
     }
 
@@ -189,9 +205,16 @@ let Controller =  (() => {
         let played_cell = Gameboard.getCellByID(e.srcElement.parentNode.parentNode.id);
         //console.log(played_cell.id)
         played_cell.lockState(e);
+        player_turn = !player_turn;
         if(game_status === 'running'){
             console.log("game is running");
         }
+        console.log(Gameboard.getCells());
+    }
+
+
+    function ai_play_turn(){
+
     }
 
     return {startGame, playRound, isPlayerTurn};
