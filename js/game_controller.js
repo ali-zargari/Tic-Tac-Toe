@@ -24,7 +24,7 @@ const Gameboard =  (() => {
             cells[i]= new Cell(i, false);
             cells[i].placeInGrid(grid);
             let temp = Tools.addElement('div',"content", cells[i].getCellElement())
-            Tools.addElement('i',"X fas fa-times", temp, undefined, 'X');
+            Tools.addElement('i',"X fas fa-times", temp, undefined, '');
             Tools.addElement('i',"O far fa-circle", temp, undefined, 'O');
 
         }
@@ -125,8 +125,8 @@ function Cell (id, played) {
      *
      * @returns cell's content element. AKA, it's child
      */
-    this.getContent = function (){
-        return elem.querySelector('.content');
+    this.getId = function (){
+        return id;
     }
 
     /*
@@ -213,7 +213,7 @@ let Controller =  (() => {
     }
 
 
-    function ai_play_turn(){
+    function ai_decide_move(){
 
     }
 

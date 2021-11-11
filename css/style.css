@@ -24,38 +24,101 @@
 }
 
 .info{
+    background-color: #2993b9;
     display: flex;
     flex-direction: column;
     margin-right: 15px;
-    border: solid;
-    height: 300px;
+    height: 190px;
     width: 150px;
     border-radius: 10px;
     margin-bottom: 190px;
+}
+
+.Choice{
+    display: flex;
+}
+
+.itext{
+    height: 100px;
+    background-color: #00b2ff;
+    border-radius: 20px;
+    margin-bottom: 5px;
+}
+
+.choice{
+    height: 47px;
+    background: #3498db;
+    background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+    background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+    background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+    background-image: -o-linear-gradient(top, #3498db, #2980b9);
+    background-image: linear-gradient(to bottom, #3498db, #2980b9);
+    border-radius: 38px;
+    color: #ffffff;
+    font-size: 35px;
+    padding: 12px 18px 0px 18px;
+    text-decoration: none;
+
+}.choice:hover {
+     background: #3cb0fd;
+     background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+     background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+     background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+     background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+     background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+     text-decoration: none;
+ }
+
+.x{
+     flex: 1;
+ }
+
+.o{
+    flex: 1;
+    opacity: 100;
+    font-size: 35px;
+    text-align: center;
+    padding: 12px 13px 1px;
 }
 
 .Player{
     display: flex;
     flex-direction: column;
     text-align: center;
-    flex: 1;
+    flex: 1 1 150%;
 }
 
 .Player h1{
-
-    flex: 0 0 20%;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    flex: 0 0 20px;
 }
 
 
 .Player input{
     text-align: center;
-    flex: 0 0 40%;
+    flex: 0 0 50px;
 }
 
 .Opponent{
     text-align: center;
-    flex: 1;
+    flex: 0 0 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+}
 
+.P2{
+    text-align: center;
+    height: 60px;
+    justify-content: center;
+}
+
+.Opponent h1{
+    margin-top: 20px;
+    height: 30px;
+    padding-top: 20px;
+    padding-bottom: 0px;
 }
 
 .grid{
