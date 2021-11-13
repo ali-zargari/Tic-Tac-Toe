@@ -24,7 +24,6 @@
 }
 
 .info{
-    background-color: #2993b9;
     display: flex;
     flex-direction: column;
     margin-right: 15px;
@@ -36,13 +35,14 @@
 
 .Choice{
     display: flex;
+    margin-bottom: 10px;
 }
 
 .itext{
     height: 100px;
     background-color: #00b2ff;
     border-radius: 20px;
-    margin-bottom: 5px;
+    margin: 0 5px 5px;
 }
 
 .choice{
@@ -81,12 +81,20 @@
     padding: 12px 13px 1px;
 }
 
-.Player{
+.Pane{
     display: flex;
     flex-direction: column;
     text-align: center;
-    flex: 1 1 150%;
+    flex: 1 1 130%;
+    background-color: #00b2ff;
+    border-radius: 10px;
 }
+
+.Player{
+    background-color: #0077ff;
+    padding-bottom: 5px;
+}
+
 
 .Player h1{
     margin-top: 10px;
@@ -101,8 +109,10 @@
 }
 
 .Opponent{
+    margin-top: 5px;
+    background-color: #0077ff;
     text-align: center;
-    flex: 0 0 100%;
+    flex: 0 0 40%;
     height: 100px;
     display: flex;
     flex-direction: column;
@@ -115,10 +125,26 @@
 }
 
 .Opponent h1{
-    margin-top: 20px;
+    margin-top: 10px;
     height: 30px;
-    padding-top: 20px;
+    padding-top: 0px;
     padding-bottom: 0px;
+}
+
+.Score{
+    background-color: #0077FFFF;
+    margin-top: 5px;
+    flex: 1 1 100%;
+    display: flex;
+    border-radius: 10px;
+}
+
+.detail div{
+    flex: 1;
+    width: 100px;
+    background-color: #0077FFFF;
+    border-radius: 10px;
+
 }
 
 .grid{
