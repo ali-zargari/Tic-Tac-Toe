@@ -105,12 +105,13 @@
     flex: 1 1 100%;
     background-color: #00b2ff;
     border-radius: 10px;
+    padding:2px 1px;
 }
 
 .Player{
     background-color: #0077ff;
     padding-bottom: 5px;
-    margin-top: 2px ;
+    margin-top: 1px ;
 }
 
 
@@ -167,7 +168,7 @@
 }
 
 .reset {
-    margin-top: 6px;
+    margin-top: 5px;
     background-color: #00b2ff;
     flex: 0 0 73%;
     border-radius: 18px;
