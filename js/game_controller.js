@@ -9,25 +9,83 @@ let game_status = '';
  */
 const Gameboard =  (() => {
 
+    let player_shape = '';
+    let player_name = 'player 1'
+    let opponent_shape = '';
+    let opponent_name = 'opponent'
     let cells = [''*9]; // array of cells
     let grid = ''; //grid to fill with cells.
+    let p_score = 0;
+    let o_score = 0;
 
     /**
      * initialize board
      */
     const init = () =>{
 
-        let index = 0;
-        grid = document.getElementsByClassName('grid')[0];
+        grid = document.querySelector('.grid');
+        console.log(grid.children);
+        grid.querySelectorAll('.cell').forEach(e => e.remove())
 
         for(let i = 0; i <9; i++){
+
+            //console.log(grid.children.item(i));
             cells[i]= new Cell(i, false);
             cells[i].placeInGrid(grid);
             let temp = Tools.addElement('div',"content", cells[i].getCellElement())
             Tools.addElement('i',"X fas fa-times", temp, undefined, '');
             Tools.addElement('i',"O far fa-circle", temp, undefined, 'O');
-
+            cells[i].resetCell();
         }
+
+        /**
+         * initialize info panel
+         */
+        p_score = 0;
+        o_score = 0;
+        let temp = document.getElementsByClassName('reset');
+        temp.item(0).addEventListener('click', function (e){
+            init();
+        })
+
+        document.querySelectorAll('.itext').forEach(inp => {
+           inp.addEventListener('input', function (e){
+               //console.log(e.target.className)
+
+               player_name = e.target.value;
+
+               if(e.target.className === 'itext P1'){
+                   document.querySelector('.p_name').innerHTML = player_name;
+                   console.log(document.querySelector('#p_name').value);
+               } else {
+                   document.querySelector('.o_name').innerHTML = player_name;
+                   console.log(document.querySelector('#p_name').value);
+               }
+
+               //console.log(player_name)
+           })
+        });
+
+        temp = document.querySelectorAll('.choice');
+        temp.forEach(e => {
+           e.addEventListener('click',function (e){
+               let temp = e.currentTarget;
+               //change the button thats pressed
+               temp.style.backgroundImage = '-webkit-linear-gradient(top, #3cb0fd, #3498db)';
+               player_shape = temp;
+               //change color of the other button
+               if(temp.nextElementSibling == null){
+                   temp.parentElement.firstElementChild.style.backgroundImage = '-webkit-linear-gradient(top, #3498db, #2980b9)';
+                   opponent_shape = temp.parentElement.firstElementChild;
+                   return;
+               } else{
+                   temp.nextElementSibling.style.backgroundImage = '-webkit-linear-gradient(top, #3498db, #2980b9)';
+                   opponent_shape = temp.nextElementSibling;
+               }
+
+
+           })
+        });
     };
 
     /**
@@ -98,7 +156,9 @@ function Cell (id, played) {
     }
 
 
-
+    this.resetCell = function(){
+        this.disappear(true)
+    }
 
     /**
      * places the cell in the passed grid. Function has to be called for other functions to work.
@@ -132,7 +192,7 @@ function Cell (id, played) {
     /*
      * function to make content disappear
      */
-    this.disappear = function(e){
+    this.disappear = function(all){
 
         let temp_shape = 'O';
         if(Controller.isPlayerTurn())

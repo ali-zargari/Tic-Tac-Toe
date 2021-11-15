@@ -19,8 +19,8 @@
         <div class="info">
             <div class="Pane Player">
                 <h1>Player</h1>
-                <input type="text" class="itext P1" placeholder="Name">
-                <h1>Choose your shape</h1>
+                <input type="text" class="itext P1" placeholder="Name" maxlength="5">
+                <h1>Choose a shape</h1>
                 <div clss="Choice">
                     <div class="choice x fas fa-times"></div>
                     <div class="choice o far fa-circle"></div>
@@ -29,15 +29,21 @@
             </div>
             <div class="Pane Opponent">
                 <h1>Opponent</h1>
-                <input type="text" class="itext P2" placeholder="Name">
+                <input type="text" class="itext P2" placeholder="Name" maxlength="5">
             </div>
             <div class="Pane Score">
-                <h1><span>Player 1</span> vs <span>Player 2</span></h1>
+                <div class="names">
+                    <div class="p_name">Player 1</div>
+                    <div class="vs">vs</div>
+                    <div class="o_name">Player 2</div>
+                </div>
                 <div class="Score detail">
                     <div>0</div>
-                    <div>vs</div>
                     <div>1</div>
                 </div>
+            </div>
+            <div class="Pane reset">
+                RESET
             </div>
         </div>
         <div class="grid">
