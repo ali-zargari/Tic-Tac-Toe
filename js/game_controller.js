@@ -1,7 +1,5 @@
 import {Tools} from "./tools.js";
 
-let game_status = '';
-
 /**
  * A Gameboard object to simulate a tic tac toe board
  *
@@ -21,14 +19,11 @@ const Gameboard =  (() => {
     let p_score = 0;
     let o_score = 0;
 
-    /**
-     * initialize board
-     */
-    const init = () =>{
-
+    const setCells = () => {
         grid = document.querySelector('.grid');
-        console.log(grid.children);
+        //console.log("test: " + grid.children);
         grid.querySelectorAll('.cell').forEach(e => e.remove())
+        //console.log("after removal" + grid.children);
 
         for(let i = 0; i <9; i++){
 
@@ -40,6 +35,27 @@ const Gameboard =  (() => {
             Tools.addElement('i',"O far fa-circle", temp, undefined, 'O');
 
         }
+    }
+
+    const reset = () => {
+
+        if(player_shape === '') return;
+
+        cells.forEach(c => {
+            c.resetCell();
+        })
+
+        setCells();
+
+    }
+
+    /**
+     * initialize board
+     */
+    const init = () =>{
+
+
+        setCells();
 
         /**
          * initialize info panel
@@ -47,24 +63,24 @@ const Gameboard =  (() => {
         p_score = 0;
         o_score = 0;
         let temp = document.getElementsByClassName('reset');
+
         temp.item(0).addEventListener('click', function (e){
-            cells.forEach(c => {
-                c.resetCell();
-            })
-            init();
+            reset();
         })
 
         document.querySelectorAll('.itext').forEach(inp => {
            inp.addEventListener('input', function (e){
                //console.log(e.target.className)
 
-               player_name = e.target.value;
+               let temp_name = e.target.value;
 
                if(e.target.className === 'itext P1'){
+                   player_name = temp_name;
                    document.querySelector('.p_name').innerHTML = player_name;
                    //console.log(document.querySelector('#p_name'));
                } else {
-                   document.querySelector('.o_name').innerHTML = player_name;
+                   opponent_name = temp_name;
+                   document.querySelector('.o_name').innerHTML = opponent_name;
                    //console.log(document.querySelector('#p_name'));
                }
 
@@ -76,6 +92,11 @@ const Gameboard =  (() => {
         temp.forEach(e => {
            e.addEventListener('click',function (e){
                let temp = e.currentTarget;
+               reset();
+
+               GameController.setPlayerTurn(true);
+               //console.log(temp);
+
                //activate board
                cells.forEach(c =>{
                    c.addELS();
@@ -83,7 +104,10 @@ const Gameboard =  (() => {
 
                //change the button that's pressed
                temp.style.backgroundImage = '-webkit-linear-gradient(top, #3cb0fd, #3498db)';
+               //if(player_shape === '')
                player_shape = temp.classList[1];
+               console.log(player_shape);
+
 
                //change color of the other button
                if(temp.nextElementSibling == null){
@@ -95,7 +119,6 @@ const Gameboard =  (() => {
                    temp.nextElementSibling.style.backgroundImage = '-webkit-linear-gradient(top, #3498db, #2980b9)';
                    opponent_shape = temp.nextElementSibling.classList[1];
                }
-
 
            })
         });
@@ -279,6 +302,16 @@ let GameController =  (() => {
     let player_turn = true;
     let selected_cell = 'NOT_SELECTED'
     let aiPerception = new Array(9);
+    let winConditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
 
     /**
      * Return player_turn (true if it is the players turn, false otherwise).
@@ -304,6 +337,7 @@ let GameController =  (() => {
         let played_cell = Gameboard.getCellByID(e.srcElement.parentNode.parentNode.id);
 
 
+
         if(played_cell) {
             played_cell.lockState(e);
             aiPerception[played_cell.id] = played_cell.getShape();
@@ -324,13 +358,18 @@ let GameController =  (() => {
         }
 
     }
+
+    function setPlayerTurn(turn){
+        player_turn = turn;
+    }
+
     function ai_decide_move(){
 
 
     }
 
 
-    return {startGame, playRound, isPlayerTurn};
+    return {startGame, playRound, isPlayerTurn, setPlayerTurn};
 })();
 
 GameController.startGame();
