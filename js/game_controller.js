@@ -11,10 +11,12 @@ const Gameboard =  (() => {
 
     let player_shape = '';
     let player_name = 'player 1'
+    let player_score = 0;
     let opponent_shape = '';
     let opponent_name = 'opponent'
-    let cells = [''*9]; // array of cells
-    let simplified_cells = ['-'*9];
+    let opponent_Score = 0;
+    let cells = []; // array of cells
+    let simplified_cells = [];
     let grid = ''; //grid to fill with cells.
     let p_score = 0;
     let o_score = 0;
@@ -259,10 +261,10 @@ function Cell (id, played) {
 
         if(GameController.isPlayerTurn()) {
             current_shape = Gameboard.getPlayerShape();
-            console.log(current_shape)
+            //console.log(current_shape)
         } else {
             current_shape = Gameboard.getOpponentShape();
-            console.log(current_shape)
+            //console.log(current_shape)
         }
     }
 
@@ -276,6 +278,7 @@ function Cell (id, played) {
 let GameController =  (() => {
     let player_turn = true;
     let selected_cell = 'NOT_SELECTED'
+    let aiPerception = new Array(9);
 
     /**
      * Return player_turn (true if it is the players turn, false otherwise).
@@ -299,21 +302,33 @@ let GameController =  (() => {
     function playRound (e){
 
         let played_cell = Gameboard.getCellByID(e.srcElement.parentNode.parentNode.id);
-        //console.log(played_cell)
+
+
         if(played_cell) {
             played_cell.lockState(e);
+            aiPerception[played_cell.id] = played_cell.getShape();
             player_turn = !player_turn;
         }
-        //if(game_status === 'running'){
-         //   console.log("game is running");
-        //}
-        //console.log(Gameboard.getCells()[0]);
+
+        ai_decide_move();
+
     }
 
+    function printBoard(){
+        //console.log(aiPerception);
+        for(let i = 0; i < 9; i++){
+            console.log(aiPerception[i] + " ");
+            if(i === 2 || i === 5){
+                console.log("\n");
+            }
+        }
 
+    }
     function ai_decide_move(){
 
+
     }
+
 
     return {startGame, playRound, isPlayerTurn};
 })();
