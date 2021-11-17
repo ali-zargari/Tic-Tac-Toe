@@ -13,6 +13,12 @@
 
 }
 
+body{
+    background-image: url('../img/Dark-Black-Background-Wallpaper-HD-40752.jpg');
+    backdrop-filter: blur(5px);
+    height: 110%;
+}
+
 .container{
     display: flex;
     align-items: center;
@@ -22,7 +28,6 @@
     width: 700px;
     padding-left: 30%;
     padding-top: 1%;
-    background-color: rgba(255, 255, 255, 0.76);
 }
 
 .info{
@@ -163,11 +168,11 @@
 
 .detail div{
 
-    flex: 1;
-    width: 100px;
+    flex: 0 0 20%;
+    width: 50px;
     background-color: #00b2ff;
     border-radius: 10px;
-
+    margin: 0 21px;
 }
 
 .Score .names{
