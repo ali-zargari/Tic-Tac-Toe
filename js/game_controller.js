@@ -378,7 +378,7 @@ let GameController =  (() => {
 
         if(won()){
             document.getElementById('win').style.visibility = 'visible'
-            window.animatelo.fadeIn(`.Winner`);
+            window.animatelo.fadeInUp(`.Winner`);
             console.log('won');
         }
     }
