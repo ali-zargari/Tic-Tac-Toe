@@ -19,7 +19,13 @@
 
 
 <body>
+
     <div class="container">
+
+        <div class="title">
+
+        </div>
+
         <div class="info">
             <div class="Pane Player">
                 <h1>Player</h1>
@@ -41,9 +47,9 @@
                     <div class="vs">vs</div>
                     <div class="o_name">Player 2</div>
                 </div>
-                <div class="Score detail">
-                    <div>0</div>
-                    <div>1</div>
+                <div class="detail">
+                    <div id="p1">0</div>
+                    <div id="p2">1</div>
                 </div>
             </div>
             <div class="Pane reset">
@@ -53,6 +59,34 @@
         <div class="grid">
 
         </div>
+
+        <div id='win' class="Pane Winner">
+            <div class="winner_announce">
+                Winner is <span>name</span>
+            </div>
+            <div class="Pane Score">
+                <div class="names">
+                    <div class="p_name">Player 1</div>
+                    <div class="vs">vs</div>
+                    <div class="o_name">Player 2</div>
+                </div>
+                <div class="Score detail">
+                    <div>0</div>
+                    <div>1</div>
+                </div>
+            </div>
+
+            <div class="cntr">
+                <div class="btn next_round">
+                    Next Round
+                </div>
+                <div class="btn reset">
+                    RESET
+                </div>
+            </div>
+
+        </div>
+
     </div>
 </body>
 </html>

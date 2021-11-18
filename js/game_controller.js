@@ -72,21 +72,17 @@ const Gameboard =  (() => {
 
         document.querySelectorAll('.itext').forEach(inp => {
            inp.addEventListener('input', function (e){
-               //console.log(e.target.className)
 
                let temp_name = e.target.value;
 
                if(e.target.className === 'itext P1'){
                    player_name = temp_name;
                    document.querySelector('.p_name').innerHTML = player_name;
-                   //console.log(document.querySelector('#p_name'));
                } else {
                    opponent_name = temp_name;
                    document.querySelector('.o_name').innerHTML = opponent_name;
-                   //console.log(document.querySelector('#p_name'));
                }
 
-               //console.log(player_name)
            })
         });
 
@@ -101,7 +97,6 @@ const Gameboard =  (() => {
                reset();
 
                GameController.setPlayerTurn(true);
-               //console.log(temp);
 
                //activate board
                cells.forEach(c =>{
@@ -110,7 +105,6 @@ const Gameboard =  (() => {
 
                //change the button that's pressed
                temp.style.backgroundImage = '-webkit-linear-gradient(top, #3cb0fd, #3498db)';
-               //if(player_shape === '')
                player_shape = temp.classList[1];
                console.log(player_shape);
 
@@ -290,10 +284,8 @@ function Cell (id, played) {
 
         if(GameController.isPlayerTurn()) {
             current_shape = Gameboard.getPlayerShape();
-            //console.log(current_shape)
         } else {
             current_shape = Gameboard.getOpponentShape();
-            //console.log(current_shape)
         }
     }
 
@@ -306,18 +298,7 @@ function Cell (id, played) {
  */
 let GameController =  (() => {
     let player_turn = true;
-    let selected_cell = 'NOT_SELECTED'
     let aiPerception = new Array(9);
-    let winConditions = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
-    ];
 
     const won = () => {
         let temp = false;
@@ -364,6 +345,9 @@ let GameController =  (() => {
      */
     const startGame = () => {
         aiPerception = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        window.animatelo.fadeOut(`.Winner`);
+        window.animatelo.fadeOut(`.title`);
+        document.getElementById('win').style.visibility = 'hidden';
         Gameboard.init();
     }
 
@@ -393,6 +377,8 @@ let GameController =  (() => {
         printBoard();
 
         if(won()){
+            document.getElementById('win').style.visibility = 'visible'
+            window.animatelo.fadeIn(`.Winner`);
             console.log('won');
         }
     }
