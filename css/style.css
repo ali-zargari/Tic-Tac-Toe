@@ -15,19 +15,29 @@
 
 body{
     background-image: url('../img/Dark-Black-Background-Wallpaper-HD-40752.jpg');
-    backdrop-filter: blur(5px);
-    height: 110%;
+    backdrop-filter: blur(3px);
+
+
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr) 1.1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+    ". . ."
+    ". Content ."
+    ". . .";
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
 }
 
 .container{
+    grid-area: Content;
     display: flex;
     align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 800px;
-    width: 700px;
-    padding-left: 30%;
-    padding-top: 1%;
+
 }
 
 .info{

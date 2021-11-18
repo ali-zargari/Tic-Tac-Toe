@@ -9,16 +9,14 @@ const Gameboard =  (() => {
 
     let player_shape = '';
     let player_name = 'player 1'
-    let player_score = 0;
     let opponent_shape = '';
     let opponent_name = 'opponent'
-    let opponent_Score = 0;
     let cells = []; // array of cells
-    let simplified_cells = [];
     let grid = ''; //grid to fill with cells.
-    let p_score = 0;
-    let o_score = 0;
 
+    /**
+     * helper  method to initialize the cells in the grid.
+     */
     const setCells = () => {
         grid = document.querySelector('.grid');
         //console.log("test: " + grid.children);
@@ -37,8 +35,12 @@ const Gameboard =  (() => {
         }
     }
 
+    /**
+     * helper method to reset the cells in the grid
+     */
     const reset = () => {
 
+        GameController.restartAIboard();
         if(player_shape === '') return;
 
         cells.forEach(c => {
@@ -60,11 +62,11 @@ const Gameboard =  (() => {
         /**
          * initialize info panel
          */
-        p_score = 0;
-        o_score = 0;
+
         let temp = document.getElementsByClassName('reset');
 
         temp.item(0).addEventListener('click', function (e){
+            GameController.restartAIboard();
             reset();
         })
 
@@ -88,6 +90,10 @@ const Gameboard =  (() => {
            })
         });
 
+        /***
+         * Set up the shape choice buttons
+         * @type {NodeListOf<Element>}
+         */
         temp = document.querySelectorAll('.choice');
         temp.forEach(e => {
            e.addEventListener('click',function (e){
@@ -313,6 +319,32 @@ let GameController =  (() => {
         [2, 4, 6],
     ];
 
+    const won = () => {
+        let temp = false;
+
+        //check rows
+        for(let i = 0; i < 6; i+=3){
+            if(aiPerception[i] === aiPerception[i+1] && aiPerception[i+1] === aiPerception[i+2]){
+                return true
+            }
+        }
+
+        //check cols
+        for(let i = 0; i < 3; i++){
+            if(aiPerception[i] === aiPerception[i+3] && aiPerception[i+3] === aiPerception[i+6]){
+                return true
+            }
+        }
+
+        //check diagonals
+        if((aiPerception[0] === aiPerception[4] && aiPerception[4] === aiPerception[8]) ||
+           (aiPerception[2] === aiPerception[4] && aiPerception[4] === aiPerception[6])){
+            return true
+        }
+
+        return temp;
+    }
+
     /**
      * Return player_turn (true if it is the players turn, false otherwise).
      */
@@ -321,10 +353,25 @@ let GameController =  (() => {
     }
 
     /**
-     * TODO: more features later
+     * restart the AI perception of the board
+     */
+    const restartAIboard = () => {
+        aiPerception = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    }
+
+    /**
+     * initialize and open the Gameboard.
      */
     const startGame = () => {
+        aiPerception = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         Gameboard.init();
+    }
+
+    /**
+     * TODO: more features later
+     */
+    const nextGame = () => {
+
     }
 
     /**
@@ -343,33 +390,39 @@ let GameController =  (() => {
             aiPerception[played_cell.id] = played_cell.getShape();
             player_turn = !player_turn;
         }
+        printBoard();
 
-        ai_decide_move();
-
+        if(won()){
+            console.log('won');
+        }
     }
 
+
+
+    /**
+     * print a simplified version of the grid.
+     */
     function printBoard(){
         //console.log(aiPerception);
         for(let i = 0; i < 9; i++){
-            console.log(aiPerception[i] + " ");
+            //console.log(aiPerception[i]);
             if(i === 2 || i === 5){
-                console.log("\n");
+                //console.log("\n");
             }
         }
 
     }
 
+    /**
+     * helper method to set player turn accordingly when changing shape.
+     * @param turn true if it is the players turn, false if not.
+     */
     function setPlayerTurn(turn){
         player_turn = turn;
     }
 
-    function ai_decide_move(){
 
-
-    }
-
-
-    return {startGame, playRound, isPlayerTurn, setPlayerTurn};
+    return {startGame, playRound, isPlayerTurn, restartAIboard, setPlayerTurn};
 })();
 
 GameController.startGame();
