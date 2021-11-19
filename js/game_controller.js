@@ -422,23 +422,25 @@ let GameController =  (() => {
         let temp = false;
 
         //check rows
-        for(let i = 0; i < 6; i+=3){
+        for(let i = 0; i <= 6; i+=3){
+            console.log(i + " " + (i+1) + " " + (i+2));
             if(aiPerception[i] === aiPerception[i+1] && aiPerception[i+1] === aiPerception[i+2]){
-                return true
+
+                return true;
             }
         }
 
         //check cols
         for(let i = 0; i < 3; i++){
             if(aiPerception[i] === aiPerception[i+3] && aiPerception[i+3] === aiPerception[i+6]){
-                return true
+                return true;
             }
         }
 
         //check diagonals
         if((aiPerception[0] === aiPerception[4] && aiPerception[4] === aiPerception[8]) ||
            (aiPerception[2] === aiPerception[4] && aiPerception[4] === aiPerception[6])){
-            return true
+            return true;
         }
 
         return temp;
@@ -496,6 +498,9 @@ let GameController =  (() => {
         }
         printBoard();
 
+        /**
+         * todo: optimize, move content into Gameboard.
+         */
         if(won()){
             if(!isPlayerTurn()){
                 Gameboard.setPlayerScore(++player_score);
