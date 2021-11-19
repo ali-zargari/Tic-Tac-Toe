@@ -9,13 +9,22 @@ const Gameboard =  (() => {
 
     let player_shape = '';
     let player_name = 'player 1'
+    let player_score = 0;
     let opponent_shape = '';
     let opponent_name = 'opponent'
+    let opponent_score = 0;
     let cells = []; // array of cells
     let grid = ''; //grid to fill with cells.
 
+    const lockCells = () => {
+        cells.forEach(c => {
+            c.lockState();
+        })
+    }
+
     /**
      * helper  method to initialize the cells in the grid.
+     * removes older cells, replaces them with new ones.
      */
     const setCells = () => {
         grid = document.querySelector('.grid');
@@ -41,13 +50,11 @@ const Gameboard =  (() => {
     const reset = () => {
 
         GameController.restartAIboard();
-        if(player_shape === '') return;
-
-        cells.forEach(c => {
-            c.resetCell();
-        })
-
         setCells();
+        cells.forEach(c => {
+            c.addELS();
+        })
+        GameController.setPlayerTurn(true);
 
     }
 
@@ -67,6 +74,36 @@ const Gameboard =  (() => {
 
         temp.item(0).addEventListener('click', function (e){
             GameController.restartAIboard();
+            GameController.resetScores();
+            reset();
+        })
+
+        //second reset button
+        temp.item(1).addEventListener('click', function (e){
+            GameController.restartAIboard();
+            GameController.resetScores();
+            window.animatelo.fadeOutUp(`.Winner`);
+
+            //give enough time to play the animation
+            setTimeout(function(){
+                document.getElementById('win').style.visibility = 'hidden'
+
+            }, 1000);
+
+            reset();
+        })
+
+        temp = document.getElementsByClassName('next_round');
+
+        temp.item(0).addEventListener('click', function (e){
+            GameController.restartAIboard();
+            window.animatelo.fadeOutUp(`.Winner`);
+            //give enough time to play the animation
+            setTimeout(function(){
+                document.getElementById('win').style.visibility = 'hidden'
+
+            }, 1000);
+
             reset();
         })
 
@@ -93,23 +130,24 @@ const Gameboard =  (() => {
         temp = document.querySelectorAll('.choice');
         temp.forEach(e => {
            e.addEventListener('click',function (e){
-               let temp = e.currentTarget;
-               reset();
 
-               GameController.setPlayerTurn(true);
+               let temp = e.currentTarget;
+               player_shape = temp.classList[1];
+
+               reset();
+               //GameController.setPlayerTurn(true);
 
                //activate board
-               cells.forEach(c =>{
-                   c.addELS();
-               })
+               //cells.forEach(c =>{
+                //   c.addELS();
+               //})
 
                //change the button that's pressed
                temp.style.backgroundImage = '-webkit-linear-gradient(top, #3cb0fd, #3498db)';
-               player_shape = temp.classList[1];
-               console.log(player_shape);
+               //console.log(player_shape);
 
 
-               //change color of the other button
+               //change color of the other button that isn't pressed
                if(temp.nextElementSibling == null){
                    temp.parentElement.firstElementChild.style.backgroundImage = '-webkit-linear-gradient(top, #3498db, #2980b9)';
                    opponent_shape = temp.parentElement.firstElementChild.classList[1];
@@ -122,6 +160,13 @@ const Gameboard =  (() => {
 
            })
         });
+
+        /**
+         * set up score
+         *
+         */
+        document.querySelectorAll('.Score .detail div').item(1).innerHTML = getOpponentScore();
+
     };
 
     /**
@@ -143,12 +188,30 @@ const Gameboard =  (() => {
     }
 
     /**
+     * return the player 1 name
+     *
+     */
+    const getPlayerName = () => {
+        return player_name;
+    }
+
+    /**
+     * return the player 2 shape
+     *
+     */
+    const getOpponentName = () => {
+        return opponent_name;
+    }
+
+
+    /**
      * return the player 1 shape
      *
      */
     const getPlayerShape = () => {
         return player_shape;
     }
+
 
     /**
      * return the player 1 shape
@@ -178,7 +241,51 @@ const Gameboard =  (() => {
 
     }
 
-    return {cells, getCellByID, getPlayerShape, getOpponentShape, init, draw, drawAtIndex, getCells};
+    /**
+     *
+     * @returns player score
+     */
+    const getPlayerScore = () =>{
+        return player_score;
+    }
+
+
+    /**
+     *
+     * @returns opponent score
+     */
+    const getOpponentScore = () =>{
+
+        return opponent_score;
+    }
+
+
+    /**
+     *  setter method for player score
+     *
+     * @returns new player score
+     */
+    const setPlayerScore = (s) =>{
+        document.querySelectorAll('.detail div').item(0).innerHTML = s;
+        document.querySelectorAll('.detail div').item(2).innerHTML = s;
+        return player_score = s;
+    }
+
+
+    /**
+     *  setter method for opponent score
+     *
+     * @returns new opponent score
+     */
+    const setOpponentScore = (s) =>{
+        document.querySelectorAll('.detail div').item(1).innerHTML = s;
+        document.querySelectorAll('.detail div').item(3).innerHTML = s;
+        return opponent_score = s;
+    }
+
+
+    return {cells, getOpponentName, getPlayerName, getCellByID, getPlayerShape, getOpponentShape,
+        init, draw, drawAtIndex, getCells, getPlayerScore, setPlayerScore, getOpponentScore, setOpponentScore, lockCells};
 })();
 
 /**
@@ -261,10 +368,10 @@ function Cell (id, played) {
     this.appear = function (){
 
         let temp_shape = Gameboard.getOpponentShape().toUpperCase();
+        console.log(temp_shape);
         if(GameController.isPlayerTurn()) {
             temp_shape = Gameboard.getPlayerShape().toUpperCase();
         }
-        //console.log(typeof temp_shape.toUpperCase() + typeof " X");
         window.animatelo.fadeIn(`.c${id} .content .${temp_shape}`);
 
     }
@@ -299,6 +406,17 @@ function Cell (id, played) {
 let GameController =  (() => {
     let player_turn = true;
     let aiPerception = new Array(9);
+    let player_score = 0;
+    let opponent_score = 0;
+
+
+    const resetScores = () =>{
+        player_score = 0;
+        opponent_score = 0;
+        Gameboard.setPlayerScore(0);
+        Gameboard.setOpponentScore(0);
+    }
+
 
     const won = () => {
         let temp = false;
@@ -345,6 +463,8 @@ let GameController =  (() => {
      */
     const startGame = () => {
         aiPerception = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        Gameboard.setPlayerScore(player_score);
+        Gameboard.setOpponentScore(opponent_score);
         window.animatelo.fadeOut(`.Winner`);
         window.animatelo.fadeOut(`.title`);
         document.getElementById('win').style.visibility = 'hidden';
@@ -377,9 +497,19 @@ let GameController =  (() => {
         printBoard();
 
         if(won()){
+            if(!isPlayerTurn()){
+                Gameboard.setPlayerScore(++player_score);
+                document.querySelector('#win span').innerHTML = Gameboard.getPlayerName();
+            } else {
+                Gameboard.setOpponentScore(++opponent_score);
+                document.querySelector('#win span').innerHTML = Gameboard.getOpponentName();
+
+            }
+
             document.getElementById('win').style.visibility = 'visible'
             window.animatelo.fadeInUp(`.Winner`);
             console.log('won');
+            Gameboard.lockCells();
         }
     }
 
@@ -408,7 +538,7 @@ let GameController =  (() => {
     }
 
 
-    return {startGame, playRound, isPlayerTurn, restartAIboard, setPlayerTurn};
+    return {startGame, playRound, isPlayerTurn, restartAIboard, resetScores, setPlayerTurn};
 })();
 
 GameController.startGame();

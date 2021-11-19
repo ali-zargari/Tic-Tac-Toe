@@ -322,7 +322,9 @@ body{
     font-size: 25px;
 }
 
-.btn, .cntr .reset{
+.btn{
+    line-height: 75px;
+    text-align: center;
     margin: 10px 15px;
     justify-content: center;
     flex: 1 1 100%;
@@ -341,8 +343,17 @@ body{
     top:1px;
 }
 
-.cntr{
+.btn_cntr{
     width: inherit;
     display: flex;
     align-content: center;
+}
+
+
+#filter{
+    visibility: hidden;
+    backdrop-filter: blur(3px);
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
 }
