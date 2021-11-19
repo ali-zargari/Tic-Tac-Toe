@@ -21,10 +21,10 @@ body{
     display: grid;
     grid-auto-rows: 1fr;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 1fr) 1.1fr;
+    grid-template-rows: repeat(2, 1.5fr) 1.1fr;
     gap: 0px 0px;
     grid-template-areas:
-    ". . ."
+    ". t ."
     ". Content ."
     ". . .";
     justify-items: center;
@@ -286,12 +286,10 @@ body{
 }
 
 .title{
-    position: absolute;
-    background-color: orangered;
-    height: 100px;
-    width: 500px;
-    left: 35vw;
-    top: 5vh;
+    grid-area: t;
+    font-size: 100px;
+    color: ghostwhite;
+    padding-top: 30%;
 }
 
 .Winner{

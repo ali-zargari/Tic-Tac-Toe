@@ -468,7 +468,6 @@ let GameController =  (() => {
         Gameboard.setPlayerScore(player_score);
         Gameboard.setOpponentScore(opponent_score);
         window.animatelo.fadeOut(`.Winner`);
-        window.animatelo.fadeOut(`.title`);
         document.getElementById('win').style.visibility = 'hidden';
         Gameboard.init();
     }
